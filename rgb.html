@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rgb-slider</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 500px;
+        text-align: center;
+        margin: 30vh auto;
+        background-color: aliceblue;
+      }
+      .box-color {
+        padding: 50px;
+        background-color: rgb(0, 0, 0);
+      }
+      .box-rgb {
+        padding: 15px;
+      }
+      .box-controller {
+        padding: 24px;
+      }
+      .controller {
+        padding: 3px 0;
+        width: 100%;
+        text-align: start;
+      }
+      .controller input {
+        width: 85%;
+      }
+      .controller label,
+      .controller span {
+        padding: 2px;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box-color"></div>
+      <div class="box-rgb">
+        <h3>rgb(0, 0, 0 )</h3>
+      </div>
+      <div class="box-controller">
+        <div class="controller">
+          <label for="r">R</label>
+          <input id="r" min="0" max="255" type="range" value="0" />
+          <span id="r-value">0</span>
+        </div>
+        <div class="controller">
+          <label for="g">G</label>
+          <input id="g" min="0" max="255" type="range" value="0" />
+          <span id="g-value">0</span>
+        </div>
+        <div class="controller">
+          <label for="b">B</label>
+          <input id="b" min="0" max="255" type="range" value="0" />
+          <span id="b-value">0</span>
+        </div>
+      </div>
+    </div>
+    <script>
+      var input_r = document.querySelector("#r");
+      var input_g = document.querySelector("#g");
+      var input_b = document.querySelector("#b");
+
+      var value_r = document.querySelector("#r-value");
+      var value_g = document.querySelector("#g-value");
+      var value_b = document.querySelector("#b-value");
+
+      var box_rgb = document.querySelector(".box-rgb h3");
+
+      function BoxColor(r, g, b) {
+        let box_color = document.querySelector(".box-color");
+        color = "rgb(" + r + "," + g + "," + b + ")";
+        box_rgb.innerHTML = color;
+        box_color.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+      }
+
+      input_r.addEventListener("change", function () {
+        value_r.innerHTML = this.value;
+        BoxColor(input_r.value, input_g.value, input_b.value);
+      });
+
+      input_g.addEventListener("change", function () {
+        value_g.innerHTML = this.value;
+        BoxColor(input_r.value, input_g.value, input_b.value);
+      });
+
+      input_b.addEventListener("change", function () {
+        value_b.innerHTML = this.value;
+        BoxColor(input_r.value, input_g.value, input_b.value);
+      });
+    </script>
+  </body>
+</html>

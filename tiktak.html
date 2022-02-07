@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TikTakToo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .kotak {
+        margin: 30px 0;
+        display: grid;
+        grid-template-columns: 100px 100px 100px;
+        grid-template-rows: 100px 100px 100px;
+        border: 2px solid;
+        width: 300px;
+      }
+
+      .box {
+        border: 1px solid;
+        margin: 1px;
+      }
+
+      .box-green {
+        transform: rotateX(180deg);
+        transition: 1s;
+        background-color: green;
+      }
+      .box-red {
+        transform: rotateX(180deg);
+        transition: 1s;
+        background-color: red;
+      }
+
+      .pop-box {
+        opacity: 0;
+        z-index: -2;
+        position:absolute;
+        text-align: center;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        width:400px;
+        height:400px;
+        margin:auto;
+        background-color: aqua;
+        border-radius: 15px;
+        
+      }
+
+      .pop-active {
+        width:450px;
+        height:450px;
+        z-index: 1;
+        opacity: 1;
+        transition: 0.5s;
+      }
+
+      .pop-body {
+        background-color: white;
+        margin: 40% 10px;
+        padding: 10px;
+      }
+      .pop-button {
+        margin: 10px;
+        padding: 10px;
+      }
+      .pop-button button{
+        width: 100px;
+        margin: 0 5px;
+        height: 30px;
+        border: solid 2px;
+      }
+
+      .pop-button button:hover {
+        cursor: pointer;
+        border: solid 2px blue;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="kotak" class="kotak">
+       
+
+      </div>
+      <div class="kolom-player" data-player="1" data-menang="0">
+        <h2>Player 1 main</h2>
+      </div>
+    </div>
+
+    <!-- POp up menang -->
+
+    <div class="pop-box">
+      <div class="pop-body">
+        <h1>Player 1 menang</h1>
+        <div class="pop-button">
+          <button id="kembali">Kembali</button>
+          <button id="main">Main lagi</button>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+
+        //green menang jumlah 3
+        //red menang jumlah 24
+
+        for(i=1; i<10; i++){
+          $("#kotak").append(`
+          <div id="`+ i +`" class="box box-click" data-value="0">
+          </div>
+          `);
+        }
+
+        $("#kotak").on("click", ".box", function(){
+          
+          var cek_green = $(this).hasClass("box-green");
+          var cek_red = $(this).hasClass("box-red");
+          var cek_menang = $(".kolom-player").attr("data-menang");
+
+          if($(".kolom-player").attr("data-player") == 1 && cek_green == false && cek_red == false && cek_menang == 0){
+            
+            $(this).addClass("box-green");
+            $(this).attr("data-value", 1);
+            
+            $(".kolom-player").attr("data-player", 2);
+            $(".kolom-player h2").html("Player 2 main");
+          }else if($(".kolom-player").attr("data-player") == 2 && cek_red == false && cek_green == false && cek_menang == 0){
+
+            $(this).addClass("box-red");
+            $(this).attr("data-value", 8);
+
+            $(".kolom-player").attr('data-player', 1);
+            $(".kolom-player h2").html("Player 1 main");
+          }else{
+
+          }
+
+
+          // mendatar dari atas
+          var mendatar_1 = parseInt($("#1").attr("data-value")) + parseInt($("#2").attr("data-value")) + parseInt($("#3").attr("data-value"));
+          var mendatar_2 = parseInt($("#4").attr("data-value")) + parseInt($("#5").attr("data-value")) + parseInt($("#6").attr("data-value"));
+          var mendatar_3 = parseInt($("#7").attr("data-value")) + parseInt($("#8").attr("data-value")) + parseInt($("#9").attr("data-value"));
+
+          // menurun dari kiri
+          var menurun_1 = parseInt($("#1").attr("data-value")) + parseInt($("#4").attr("data-value")) + parseInt($("#7").attr("data-value"));
+          var menurun_2 = parseInt($("#2").attr("data-value")) + parseInt($("#5").attr("data-value")) + parseInt($("#8").attr("data-value"));
+          var menurun_3 = parseInt($("#3").attr("data-value")) + parseInt($("#6").attr("data-value")) + parseInt($("#9").attr("data-value"));
+
+          // diagonal dari x
+          var diagonal_1 = parseInt($("#1").attr("data-value")) + parseInt($("#5").attr("data-value")) + parseInt($("#9").attr("data-value"));
+          var diagonal_2 = parseInt($("#3").attr("data-value")) + parseInt($("#5").attr("data-value")) + parseInt($("#7").attr("data-value"));
+
+
+          function PopUp(text) {
+            $(".pop-body h1").html(text);
+            $(".kolom-player h2").html(text);
+            $(".pop-box").toggleClass("pop-active");
+            $(".kolom-player").attr("data-menang", "menang");
+            
+            return true;
+          }
+
+
+          if(mendatar_1 == 3 || mendatar_2 == 3 || mendatar_3 == 3 ||  menurun_1 == 3 || menurun_2 == 3 || menurun_3 == 3 || diagonal_1 == 3 || diagonal_2 == 3 ){
+             setTimeout(PopUp("Player 1 Menang"), 2000);
+          }
+
+          if(mendatar_1 == 24 || mendatar_2 == 24 || mendatar_3 == 24 ||  menurun_1 == 24 || menurun_2 == 24 || menurun_3 == 24 || diagonal_1 == 24 || diagonal_2 == 24 ){
+              setTimeout(PopUp("Player 2 Menang"), 2000);
+          }
+        })
+
+
+
+
+        $("#kembali").click(function(){
+            $(".pop-box").toggleClass("pop-active");
+        })
+
+        $("#main").click(function(){
+          window.location.reload();
+        })
+
+
+
+      });
+    </script>
+  </body>
+</html>
