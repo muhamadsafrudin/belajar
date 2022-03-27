@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suit</title>
+  <style>
+    .container {
+      align-items: center;
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    .card {
+      border-color: aqua;
+    }
+
+    .img-box {
+      cursor: pointer;
+      width: 110px;
+      text-align: center;
+      margin: 2px 15px;
+    }
+    .img-box:hover {
+      cursor: pointer;
+      width: 120px;
+      text-align: center;
+      transition: 0.2s;
+    }
+
+    .img-box-comp {
+      width: 140px;
+      text-align: center;
+      margin: 2px 5px;
+    }
+
+    .img-box-comp h1 {
+      margin-top: 40px;
+    }
+
+
+
+    img {
+      width: 100%;
+      margin: 2px;
+    }
+
+    .element {
+      display: flex;
+      justify-content: center;
+      height: 125px;
+    }
+
+    .box-button {
+      margin: 10px 3px;
+    }
+
+    .card-title {
+      margin: 50px 0;
+    }
+
+    .btn {
+      padding: 5px 15px;
+      background-color: green;
+      font-size: 20px;
+      cursor: pointer;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      display: none;  
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="card element">
+    <div class="img-box-comp">
+      <img id="comp" data-el="" src="https://w7.pngwing.com/pngs/298/276/png-transparent-algorithm-website-orange-question-mark-text-trademark-logo.png">
+      <label for="">Computer</label>
+      <h2 id="scor-c" class="scor">0</h2>
+    </div>
+    <div class="img-box-comp">
+      <h1 class="vs">VS</h1>
+    </div>
+    <div class="img-box-comp">
+      <img id="your" data-el="" src="https://w7.pngwing.com/pngs/298/276/png-transparent-algorithm-website-orange-question-mark-text-trademark-logo.png">
+      <label for="">Yours</label>
+      <h2 id="scor-y" class="scor">0</h2>
+    </div>
+  </div>
+  <div class="card-title">
+      <h2 class="title">PILIH ELEMENT</h2>
+  </div>
+  <div class="card">
+    <div class="card-body element">
+      <div id="batu" class="img-box select">
+        <img src="https://raynormw.github.io/hacktiv8/phase0/week2/batu.png">
+      </div>
+      <div id="gunting" class="img-box select">
+        <img src="https://raynormw.github.io/hacktiv8/phase0/week2/gunting.png">
+      </div>
+      <div id="kertas" class="img-box select">
+        <img src="https://raynormw.github.io/hacktiv8/phase0/week2/kertas.png">
+      </div>
+    </div>
+  </div>
+  <div class="box-button">
+    <button id="adu" class="btn">Adu</button>
+  </div>
+</div>
+
+  <script>
+
+    const batu    = "https://raynormw.github.io/hacktiv8/phase0/week2/batu.png";
+    const gunting = "https://raynormw.github.io/hacktiv8/phase0/week2/gunting.png";
+    const kertas  = "https://raynormw.github.io/hacktiv8/phase0/week2/kertas.png";
+    const tanya   = "https://w7.pngwing.com/pngs/298/276/png-transparent-algorithm-website-orange-question-mark-text-trademark-logo.png";
+    
+    var title = document.querySelector(".title");
+
+
+
+    var your = document.querySelector("#your");
+    var comp = document.querySelector("#comp");
+
+    let select = document.querySelectorAll(".select");
+    var result = "";
+
+    var elc_random = [
+      {
+        "elc" : "batu",
+        "img" : batu
+      },
+      {
+        "elc" : "gunting",
+        "img" : gunting
+      },
+      {
+        "elc" : "kertas",
+        "img" : kertas
+      },
+    ];
+
+    for(i=0; i<select.length; i++){
+      select[i].addEventListener('click', function(event){
+        var selected = this.getAttributeNode("id").value;
+        document.querySelector("#adu").style.display = "inline";
+        if(selected == 'batu'){
+          your.setAttribute("src", batu);
+          your.setAttribute("data-el", "batu");
+        }
+        if(selected == 'gunting'){
+          your.setAttribute("src", gunting);
+          your.setAttribute("data-el", "gunting");
+        }
+        if(selected == 'kertas'){
+          your.setAttribute("src", kertas);
+          your.setAttribute("data-el", "kertas");
+        }
+      })
+    }   
+
+    var scor_c = 0;
+    var scor_y = 0;
+    document.querySelector("#adu").addEventListener("click", function(event) {
+      let ely = your.getAttributeNode("data-el").value;
+     if(ely != ""){
+
+
+      var select_elc = elc_random[Math.floor(Math.random() * 3)];
+      comp.setAttribute("src", select_elc.img);
+      comp.setAttribute("data-el", select_elc.elc);
+
+      if(ely == "batu"){
+        if(select_elc.elc == "batu"){
+          result = "SERI";
+        }else if(select_elc.elc == "gunting"){
+          result = "Kamu Menang";
+          scor_y++;
+        }else if(select_elc.elc == "kertas"){
+          result = "Kamu Kalah";
+          scor_c++;
+        }else{
+          result = "Terjadi Kesalahan";
+        }
+      }
+
+      if(ely == "gunting"){
+        if(select_elc.elc == "batu"){
+          result = "Kamu Kalah";
+          scor_c++;
+        }else if(select_elc.elc == "gunting"){
+          result = "SERI";
+        }else if(select_elc.elc == "kertas"){
+          result = "Kamu Menang";
+          scor_y++;
+        }else{
+          result = "Terjadi Kesalahan";
+        }
+      }
+
+      if(ely == "kertas"){
+        if(select_elc.elc == "batu"){
+          result = "Kamu Menang";
+          scor_y++;
+        }else if(select_elc.elc == "gunting"){
+          result = "Kamu Kalah";
+          scor_c++;
+        }else if(select_elc.elc == "kertas"){
+          result = "SERI";
+        }else{
+          result = "Terjadi Kesalahan";
+        }
+      }
+
+      title.innerHTML = result;
+      document.querySelector("#scor-c").innerHTML = scor_c;
+      document.querySelector("#scor-y").innerHTML = scor_y;
+
+     }else{
+
+      title.innerHTML = "PILIH ELEMENT";
+     }
+
+    });
+
+  </script>
+</body>
+</html>
